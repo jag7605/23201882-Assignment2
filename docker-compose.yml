@@ -1,0 +1,46 @@
+services:
+  student-db:
+    image: postgres:15
+    container_name: student-db
+    environment:
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: students
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - microservices-net
+
+  student-profile:
+    build: ./student-profile
+    container_name: student-profile
+    environment:
+      DATABASE_URL: postgresql://student:password@student-db:5432/students
+      FLASK_ENV: development
+    depends_on:
+      - student-db
+    ports:
+      - "5001:5001"
+    networks:
+      - microservices-net
+
+  admin-frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      - student-profile
+    networks:
+      - microservices-net
+
+networks:
+  microservices-net:
+    driver: bridge
