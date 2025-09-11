@@ -1,10 +1,14 @@
 -- REM: *******************************************************************
 -- REM: ***** Assignment 2: INFS605 Microservices Programming Project *****
 -- REM: *******************************************************************
--- REM: * Purpose: Creating the PostGres SQL code needed to create the tables for the database*
+-- REM: * Purpose: Creating the PostGres SQL code needed to create the tables for the database *
 -- REM: * Stephen Thorpe 9301663 *
--- REM: * Version: 1.7 (Sunday 24 August 2025) *
+-- REM: * Version: 2.0 (Tuesday 26 August 2025) *
+-- REM: * Extended to include courses and feedback tables for additional services *
 
+-- ===========================
+-- STUDENT PROFILE SERVICE
+-- ===========================
 CREATE TABLE IF NOT EXISTS students (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -43,3 +47,47 @@ INSERT INTO students (name, email, attendance) VALUES
 ('Hannah Lee', 'hannah.lee@example.com', '[]'),
 ('Michael Scott', 'michael.scott@example.com', '[]'),
 ('Rachel Green', 'rachel.green@example.com', '[]');
+
+-- ===========================
+-- COURSE CATALOGUE SERVICE
+-- ===========================
+CREATE TABLE IF NOT EXISTS courses (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT
+);
+
+INSERT INTO courses (name, description) VALUES
+('COMP101', 'Introduction to Computing'),
+('COMP202', 'Data Structures and Algorithms'),
+('COMP303', 'Databases and Information Systems');
+
+-- ===========================
+-- FEEDBACK SERVICE
+-- ===========================
+CREATE TABLE IF NOT EXISTS feedback (
+    id SERIAL PRIMARY KEY,
+    student_name VARCHAR(100),
+    message TEXT
+);
+
+INSERT INTO feedback (student_name, message) VALUES
+('Ethan', 'Really enjoyed the course!'),
+('Rachel', 'The lectures were too fast.');
+
+-- ===========================
+-- NOTIFICATION SERVICE
+-- ===========================
+CREATE TABLE IF NOT EXISTS notifications (
+    id SERIAL PRIMARY KEY,
+    student_id INT NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students (id) ON DELETE CASCADE
+);
+
+-- Sample notifications to fill the table
+INSERT INTO notifications (student_id, message) VALUES
+(1, 'Welcome to the course portal, Aroha!'),
+(2, 'Tane, don’t forget to check your attendance records.'),
+(3, 'Moana, new feedback is available for your last assignment.');

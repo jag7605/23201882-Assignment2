@@ -8,7 +8,10 @@ import time
 app = Flask(__name__)
 CORS(app)
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgres://studentuser:studentpass@student-db:5432/studentsdb")
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://student:password@student-db:5432/students"
+)
 
 max_retries = 20
 for i in range(max_retries):

@@ -10,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - student-db-data:/var/lib/postgresql/data
     networks:
       - microservices-net
 
@@ -26,6 +27,45 @@ services:
     networks:
       - microservices-net
 
+  course-catalogue:
+    build: ./course-catalogue
+    container_name: course-catalogue
+    environment:
+      DATABASE_URL: postgresql://student:password@student-db:5432/students
+      FLASK_ENV: development
+    depends_on:
+      - student-db
+    ports:
+      - "5003:5003"
+    networks:
+      - microservices-net
+
+  feedback:
+    build: ./feedback
+    container_name: feedback
+    environment:
+      DATABASE_URL: postgresql://student:password@student-db:5432/students
+      FLASK_ENV: development
+    depends_on:
+      - student-db
+    ports:
+      - "5002:5002"
+    networks:
+      - microservices-net
+
+  notification:
+    build: ./notification
+    container_name: notification
+    environment:
+      DATABASE_URL: postgresql://student:password@student-db:5432/students
+      FLASK_ENV: development
+    depends_on:
+      - student-db
+    ports:
+      - "5004:5004"
+    networks:
+      - microservices-net
+
   admin-frontend:
     build: ./frontend
     container_name: frontend
@@ -38,9 +78,15 @@ services:
       CHOKIDAR_USEPOLLING: "true"
     depends_on:
       - student-profile
+      - course-catalogue
+      - feedback
+      - notification
     networks:
       - microservices-net
 
 networks:
   microservices-net:
     driver: bridge
+
+volumes:
+  student-db-data:
