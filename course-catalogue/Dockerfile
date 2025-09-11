@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+# All of the Dockerfiles in this project are based on python 3.11-slim and are pretty much identical with the exception of the
+# Dockerfile in frontend/src.
+
 WORKDIR /app
 
 # Install netcat (needed for wait-for-it.sh)

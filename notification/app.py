@@ -5,6 +5,8 @@ from psycopg2.extras import RealDictCursor
 import os
 import time
 
+# Refer to comments in course-catalogue/app.py for detailed explanations as the structure is very similar.
+
 app = Flask(__name__)
 CORS(app)
 
