@@ -186,6 +186,70 @@ Go to `http://localhost:3000`. Use the buttons to switch between:
 
 Perform add/delete actions and verify updates live.
 
+## API Documentation
+
+Each backend service exposes a REST API with JSON responses.  
+
+---
+
+### Course Catalogue Service (port 5003)
+
+- **GET /courses** → Returns all courses.  
+- **POST /courses**  
+  - Request:  
+    ```json
+    { "name": "COMP999", "description": "Special Topics in Software" }
+    ```
+  - Response:  
+    ```json
+    { "id": 4, "name": "COMP999", "description": "Special Topics in Software" }
+    ```
+- **DELETE /courses/{id}** → Deletes a course by ID.  
+  - Response:  
+    ```json
+    { "message": "Course 4 deleted" }
+    ```
+
+---
+
+### Feedback Service (port 5002)
+
+- **GET /feedback** → Returns all feedback entries.  
+- **POST /feedback**  
+  - Request:  
+    ```json
+    { "student_name": "Alice", "message": "Loving this course!" }
+    ```
+  - Response:  
+    ```json
+    { "id": 3, "student_name": "Alice", "message": "Loving this course!" }
+    ```
+- **DELETE /feedback/{id}** → Deletes a feedback entry by ID.  
+  - Response:  
+    ```json
+    { "message": "Feedback 3 deleted" }
+    ```
+
+---
+
+### Notification Service (port 5004)
+
+- **GET /notifications** → Returns all notifications.  
+- **POST /notifications**  
+  - Request:  
+    ```json
+    { "student_id": 1, "message": "Your COMP999 course has been added!" }
+    ```
+  - Response:  
+    ```json
+    { "id": 4, "student_id": 1, "message": "Your COMP999 course has been added!" }
+    ```
+- **DELETE /notifications/{id}** → Deletes a notification by ID.  
+  - Response:  
+    ```json
+    { "message": "Notification 4 deleted" }
+    ```
+
 ##  Verification
 
 -   Services were tested with `curl` and through the frontend.
