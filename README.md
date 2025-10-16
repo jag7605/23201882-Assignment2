@@ -8,6 +8,7 @@ This project expands on the microservices-based student administration portal gi
 
 (Please note, I did not use a virtual machine like ubuntu as I did this locally on my Macbook with docker installed on it) 
 
+Link to repo: https://github.com/jag7605/23201882-Assignment2 
 
 ### Services:
 
